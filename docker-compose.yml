@@ -1,0 +1,28 @@
+name: winejs
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: winejs-frontend
+    restart: unless-stopped
+    ports:
+      - "8913:80"
+    depends_on:
+      backend:
+        condition: service_started
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: winejs-backend
+    restart: unless-stopped
+    ports:
+      - "8089:8089"
+    volumes:
+      - winejs-data:/data
+
+volumes:
+  winejs-data:
